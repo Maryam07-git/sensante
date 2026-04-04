@@ -1,6 +1,7 @@
 """
 SenSante - Exploration du dataset patients_dakar.csv
 Lab 1 : Git, Python et Structure Projet
+Auteur : Ndeye Marieme Gueye - L2 GLSI B - ESP/UCAD
 """
 
 import pandas as pd
