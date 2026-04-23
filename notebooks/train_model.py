@@ -180,3 +180,54 @@ print(f"\nProbabilités par classe :")
 for classe, proba in zip(model_loaded.classes_, probas):
     bar = '#' * int(proba * 30)
     print(f"  {classe:8s} : {proba:.1%}  {bar}")
+
+
+
+
+
+#EXO1
+
+
+    # Importance des features
+print("\n--- Importance des features ---")
+importances = model.feature_importances_
+for name, imp in sorted(zip(feature_cols, importances),
+                        key=lambda x: x[1], reverse=True):
+    print(f"  {name:20s} : {imp:.3f}")
+
+
+
+
+
+#EXO2
+
+
+
+# 3 patients fictifs
+print("\n--- Exercice 2 : 3 patients fictifs ---")
+patients_test = [
+    {'age': 19, 'sexe': 'M', 'temperature': 37.0, 'tension_sys': 120,
+     'toux': False, 'fatigue': False, 'maux_tete': False, 'region': 'Dakar'},
+    {'age': 35, 'sexe': 'F', 'temperature': 40.2, 'tension_sys': 95,
+     'toux': True, 'fatigue': True, 'maux_tete': True, 'region': 'Dakar'},
+    {'age': 65, 'sexe': 'M', 'temperature': 38.7, 'tension_sys': 145,
+     'toux': True, 'fatigue': True, 'maux_tete': False, 'region': 'Dakar'},
+]
+descriptions = [
+    "Jeune (19 ans) sans symptômes",
+    "Adulte (35 ans) avec forte fièvre",
+    "Âgé (65 ans) avec toux",
+]
+
+for desc, p in zip(descriptions, patients_test):
+    s_enc = le_sexe_loaded.transform([p['sexe']])[0]
+    r_enc = le_region_loaded.transform([p['region']])[0]
+    f = [p['age'], s_enc, p['temperature'], p['tension_sys'],
+         int(p['toux']), int(p['fatigue']), int(p['maux_tete']), r_enc]
+    diag = model_loaded.predict([f])[0]
+    prob = model_loaded.predict_proba([f])[0].max()
+    print(f"  {desc:40s} → {diag} ({prob:.1%})")
+
+
+
+
